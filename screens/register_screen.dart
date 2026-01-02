@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  DateTime? _selectedDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now().subtract(const Duration(days: 365 * 20)),
+      firstDate: DateTime(1950),
+      lastDate: DateTime.now(),
+      helpText: 'متى حابه نحتفل فيكِ؟ 🎂',
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF5F7), // لون خلفية هادئ
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "يا هلا بجميلتنا! ✨",
+              style: TextStyle(fontSize: 26, color: Color(0xFFD81B60), fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () => _selectDate(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFFD81B60),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              ),
+              child: Text(_selectedDate == null 
+                  ? 'شاركينا يوم ميلادكِ المميز 🌸' 
+                  : 'موعدنا يوم: ${_selectedDate!.day}/${_selectedDate!.month} 🎉'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
